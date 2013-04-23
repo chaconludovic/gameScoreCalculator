@@ -75,11 +75,14 @@ var app = {
 	initialize : function() {
 		this.ajouterParticipantTpl = Handlebars.compile($(
 				"#ajouter-un-participant-tpl").html());
+		this.allerAPageCreationDepenseTpl = Handlebars.compile($(
+				"#aller-a-la-page-creation-depense-tpl").html());
 		this.afficherTousLesParticipantsTpl = Handlebars.compile($(
 				"#afficher-les-participants-li-tpl").html());
 		var self = this;
 		$('body').append(this.ajouterParticipantTpl()).append(
-				this.afficherTousLesParticipantsTpl());
+				this.afficherTousLesParticipantsTpl()).append(
+				this.allerAPageCreationDepenseTpl());
 
 	}
 };
