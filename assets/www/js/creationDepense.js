@@ -2,6 +2,29 @@ document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
 	recupererTousLesParticipants();
+	gestionDeLAjoutDeDepense();
+}
+
+function gestionDeLAjoutDeDepense() {
+	$("#ajouterDepense")
+			.click(
+					function() {
+						var db = window.openDatabase("Database", "1.0",
+								"Cordova Demo", 200000);
+						db
+								.transaction(
+										function(tx) {
+											tx
+													.executeSql(
+															'INSERT INTO DEPENSE (montant,participant_id) VALUES (?,?)',
+															[
+																	$("#depense")
+																			.val(),
+																	$("#participantSelectionne")
+																			.val() ],
+															errorCB);
+										}, errorCB);
+					});
 }
 
 function recupererTousLesParticipants() {

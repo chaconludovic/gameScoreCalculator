@@ -19,6 +19,13 @@ function populateDB() {
 						tx
 								.executeSql('CREATE TABLE IF NOT EXISTS PARTICIPANT (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, nom_participant)');
 					}, errorCB);
+	db
+			.transaction(
+					function(tx) {
+						tx
+								.executeSql('CREATE TABLE IF NOT EXISTS DEPENSE (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, montant DOUBLE ,participant_id INTEGER, FOREIGN KEY (participant_id) REFERENCES PARTICIPANT (id))');
+					}, errorCB);
+
 }
 function gestionDeLAjoutDeParticipant() {
 	$("#ajouterParticipant")
