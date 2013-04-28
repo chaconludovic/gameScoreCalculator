@@ -9,13 +9,14 @@ function onDeviceReady() {
 }
 
 function afficherLaSynthese() {
-	var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);//INNER JOIN DEPENSE ON PARTICIPANT.id = DEPENSE.participant_id
+	var idProjetCourant = window.localStorage.getItem("idProjetCourant");
+	var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 	db
 			.transaction(function(tx) {
 				tx
 						.executeSql(
-								"SELECT PARTICIPANT.nom_participant as nom_participant , DEPENSE.montant as montant FROM PARTICIPANT , DEPENSE WHERE PARTICIPANT.id = DEPENSE.participant_id ",
-								[],
+								"SELECT PARTICIPANT.nom_participant as nom_participant , DEPENSE.montant as montant FROM PARTICIPANT , DEPENSE WHERE PARTICIPANT.id = DEPENSE.participant_id and PARTICIPANT.projet_id = ? ",
+								[ idProjetCourant ],
 								function(tx, results) {
 									var len = results.rows.length;
 									console
@@ -47,8 +48,11 @@ var app = {
 	initialize : function() {
 		this.afficheLaSyntheseTpl = Handlebars.compile($(
 				"#afficher-les-depenses-tpl").html());
+		this.allerAPageCreationParticipantTpl = Handlebars.compile($(
+				"#aller-a-la-page-creation-de-participant-tpl").html());
 		var self = this;
-		$('body').append(this.afficheLaSyntheseTpl());
+		$('body').append(this.afficheLaSyntheseTpl()).append(
+				this.allerAPageCreationParticipantTpl());
 
 	}
 };

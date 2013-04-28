@@ -18,9 +18,11 @@ function gestionDeLAjoutDeDepense() {
 													.executeSql(
 															'INSERT INTO DEPENSE (montant,participant_id) VALUES (?,?)',
 															[
-																	$("#depense")
+																	$(
+																			"#depense")
 																			.val(),
-																	$("#participantSelectionne")
+																	$(
+																			"#participantSelectionne")
 																			.val() ],
 															errorCB);
 										}, errorCB);
@@ -28,13 +30,14 @@ function gestionDeLAjoutDeDepense() {
 }
 
 function recupererTousLesParticipants() {
+	var idProjetCourant = window.localStorage.getItem("idProjetCourant");
 	var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 	db
 			.transaction(function(tx) {
 				tx
 						.executeSql(
-								"SELECT * FROM PARTICIPANT",
-								[],
+								"SELECT * FROM PARTICIPANT WHERE projet_id = ?",
+								[ idProjetCourant ],
 								function(tx, results) {
 									var len = results.rows.length;
 									Handlebars
@@ -65,11 +68,20 @@ function recupererTousLesParticipants() {
 														return new Handlebars.SafeString(
 																ret);
 													});
+									this.allerAPageDeSyntheseTpl = Handlebars
+											.compile($(
+													"#aller-a-la-page-de-synthese-tpl")
+													.html());
 									$('body')
 											.append(
 													Handlebars
 															.compile($(
 																	"#afficher-liste-deroulante-participant-tpl")
+																	.html()))
+											.append(
+													Handlebars
+															.compile($(
+																	"#aller-a-la-page-de-synthese-tpl")
 																	.html()));
 								}, errorCB);
 			});
@@ -77,10 +89,3 @@ function recupererTousLesParticipants() {
 function errorCB(err) {
 	console.log("Error processing SQL: " + err.code);
 }
-var app = {
-	initialize : function() {
-
-	}
-};
-
-app.initialize();
