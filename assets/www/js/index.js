@@ -71,8 +71,24 @@ function txWin(tx) {
 var app = {
 
 	initialize : function() {
-		this.homeTpl = Handlebars.compile($("#home-tpl").html());
-		$('body').html(this.homeTpl());
+		Handlebars
+				.registerHelper(
+						'afficherLienProjetCourant',
+						function() {
+							var idProjetCourant = window.localStorage
+									.getItem("idProjetCourant");
+							if (idProjetCourant != null) {
+								var str = '<h1><a href="synthese.html">Aller au projet courant</a></h1>';
+								return new Handlebars.SafeString(str);
+							}
+						});
+		this.allerAGestionDesProjetsTpl = Handlebars.compile($(
+				"#aller-a-la-gestion-des-projets-tpl").html());
+		this.allerAProjetCourantTpl = Handlebars.compile($(
+				"#aller-au-projet-courant-tpl").html());
+
+		$('body').append(this.allerAGestionDesProjetsTpl()).append(
+				this.allerAProjetCourantTpl());
 	}
 };
 

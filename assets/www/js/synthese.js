@@ -46,13 +46,56 @@ function errorCB(err) {
 var app = {
 
 	initialize : function() {
+		Handlebars
+				.registerHelper(
+						'barNavigationDuBas',
+						function(page1, page2, page3) {
+							if (typeof (page1) != "string") {
+								return;
+							}
+
+							var nombreArg = 0;
+							for ( var i = 0; i < arguments.length; i++) {
+								if (typeof (arguments[i]) == "string") {
+									nombreArg += 1;
+								}
+							}
+							var diviseurDeDiv = 100 / nombreArg;
+
+							var boutons = '<div class="divBas" style="width: '
+									+ diviseurDeDiv
+									+ '%;"><button type="button" class="buttonBas" onclick="window.location = \''
+									+ page1.split("|")[0] + '\';">'
+									+ page1.split("|")[1] + '</button></div>';
+							if (typeof (page2) == "string") {
+								boutons += '<div class="divBas" style="width: '
+										+ diviseurDeDiv
+										+ '%;"><button type="button" class="buttonBas" onclick="window.location = \''
+										+ page2.split("|")[0] + '\';">'
+										+ page2.split("|")[1]
+										+ '</button></div>';
+							}
+							if (typeof (page3) == "string") {
+								boutons += '<div class="divBas" style="width: '
+										+ diviseurDeDiv
+										+ '%;"><button type="button" class="buttonBas" onclick="window.location = \''
+										+ page3.split("|")[0] + '\';">'
+										+ page3.split("|")[1]
+										+ '</button></div>';
+							}
+							var str = '<div class="bas">' + boutons + '</div>';
+							return new Handlebars.SafeString(str);
+						});
 		this.afficheLaSyntheseTpl = Handlebars.compile($(
 				"#afficher-les-depenses-tpl").html());
 		this.allerAPageCreationParticipantTpl = Handlebars.compile($(
 				"#aller-a-la-page-creation-de-participant-tpl").html());
+		this.barNavigationDuBas = Handlebars.compile($(
+				"#bar-navigation-du-bas-tpl").html());
 		var self = this;
 		$('body').append(this.afficheLaSyntheseTpl()).append(
-				this.allerAPageCreationParticipantTpl());
+				this.allerAPageCreationParticipantTpl()).append(
+				this.barNavigationDuBas());
 
 	}
 };
